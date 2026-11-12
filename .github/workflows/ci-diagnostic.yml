@@ -251,7 +251,7 @@ jobs:
       - name: Test
         run: |
           WAGTAIL_FAIL_ON_VERSIONED_STATIC=1 DJANGO_SETTINGS_MODULE=wagtail.test.settings django-admin check
-          coverage run --parallel-mode --source wagtail runtests.py ${{ matrix.parallel }}
+          python runtests.py ${{ matrix.parallel }}
         env:
           DATABASE_ENGINE: django.db.backends.mysql
           DATABASE_HOST: '127.0.0.1'
@@ -260,12 +260,6 @@ jobs:
           USE_EMAIL_USER_MODEL: ${{ matrix.emailuser }}
           USE_CUSTOM_PAGE_MODEL: ${{ matrix.custompage }}
           DISABLE_TIMEZONE: ${{ matrix.notz }}
-      - name: Upload coverage data
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: coverage-data-${{ github.job }}-${{ strategy.job-index }}
-          path: .coverage.*
-          include-hidden-files: true
 
   test-sqlite-elasticsearch8:
     runs-on: ubuntu-26.04-arm
